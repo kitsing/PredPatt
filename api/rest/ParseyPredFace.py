@@ -17,6 +17,7 @@ from predpatt import load_conllu
 from predpatt import PredPattOpts
 from predpatt.util.ud import dep_v2
 
+import jsonpickle
 
 def load_model(base_dir, master_spec_name, checkpoint_name):
     """
@@ -152,12 +153,14 @@ def parse(text):
                         resolve_poss=resolve_poss,
                         ud=ud)
     ppatt = PredPatt(conll_pp, opts=opts)
+    ppatt_encoded = jsonpickle.encode(ppatt)
     predicate_deps, arg_deps = get_ud_fragments(ppatt)
 
     #NOTE:
     #This returns the pretty print formatted string from PredPatt. This is done
     #largely as a place holder for JSON compatability within the REST API.
     return {'predpatt': {'predicate_deps': predicate_deps,
-                         'arg_deps': arg_deps},
+                         'arg_deps': arg_deps,
+                         'original': ppatt_encoded},
             'conll': conll_parsed,
             'original': text}
