@@ -1089,10 +1089,12 @@ class PredPatt(object):
 
         """
         q = [s]
+        visited = set()
         while q:
             s = q.pop()
+            visited.add(s)
             yield s
-            q.extend(e.dep for e in s.dependents if follow(e))
+            q.extend([e.dep for e in s.dependents if follow(e) and e.dep not in visited])
 
     def _get_top_xcomp(self, predicate):
         """
@@ -1100,8 +1102,10 @@ class PredPatt(object):
         governors return current predicate.
         """
         c = predicate.root.gov
-        while c is not None and c.gov_rel == self.ud.xcomp and c in self.event_dict:
+        visited = set()
+        while c is not None and c.gov_rel == self.ud.xcomp and c in self.event_dict and c not in visited:
             c = c.gov
+            visited.add(c)
         return self.event_dict.get(c)
 
     def parents(self, predicate):
