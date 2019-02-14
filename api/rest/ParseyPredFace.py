@@ -15,7 +15,7 @@ from tensorflow.python.platform import tf_logging as logging
 from predpatt import PredPatt
 from predpatt import load_conllu
 from predpatt import PredPattOpts
-from predpatt.util.ud import dep_v2
+from predpatt.util.ud import dep_v2, dep_v1
 
 import jsonpickle
 
