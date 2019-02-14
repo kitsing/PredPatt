@@ -15,8 +15,9 @@ from tensorflow.python.platform import tf_logging as logging
 from predpatt import PredPatt
 from predpatt import load_conllu
 from predpatt import PredPattOpts
-from predpatt.util.ud import dep_v2
+from predpatt.util.ud import dep_v2, dep_v1
 
+import jsonpickle
 
 def load_model(base_dir, master_spec_name, checkpoint_name):
     """
@@ -144,20 +145,22 @@ def parse(text):
     resolve_amod = True   # adjectival modifiers
     resolve_conj = True   # conjuction
     resolve_poss = True   # possessives
-    ud = dep_v2.VERSION   # the version of UD
+    ud = dep_v1.VERSION   # the version of UD
     opts = PredPattOpts(resolve_relcl=resolve_relcl,
                         resolve_appos=resolve_appos,
                         resolve_amod=resolve_amod,
                         resolve_conj=resolve_conj,
                         resolve_poss=resolve_poss,
-                        ud=ud)
+                        ud=ud, cut=False)
     ppatt = PredPatt(conll_pp, opts=opts)
+    ppatt_encoded = jsonpickle.encode(ppatt)
     predicate_deps, arg_deps = get_ud_fragments(ppatt)
 
     #NOTE:
     #This returns the pretty print formatted string from PredPatt. This is done
     #largely as a place holder for JSON compatability within the REST API.
     return {'predpatt': {'predicate_deps': predicate_deps,
-                         'arg_deps': arg_deps},
+                         'arg_deps': arg_deps,
+                         'original': ppatt_encoded},
             'conll': conll_parsed,
             'original': text}
