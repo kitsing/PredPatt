@@ -145,7 +145,7 @@ def parse(text):
     resolve_amod = True   # adjectival modifiers
     resolve_conj = True   # conjuction
     resolve_poss = True   # possessives
-    ud = dep_v2.VERSION   # the version of UD
+    ud = dep_v1.VERSION   # the version of UD
     opts = PredPattOpts(resolve_relcl=resolve_relcl,
                         resolve_appos=resolve_appos,
                         resolve_amod=resolve_amod,
