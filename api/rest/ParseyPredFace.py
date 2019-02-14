@@ -151,7 +151,7 @@ def parse(text):
                         resolve_amod=resolve_amod,
                         resolve_conj=resolve_conj,
                         resolve_poss=resolve_poss,
-                        ud=ud, cut=False)
+                        ud=ud, cut=True)
     ppatt = PredPatt(conll_pp, opts=opts)
     ppatt_encoded = jsonpickle.encode(ppatt)
     predicate_deps, arg_deps = get_ud_fragments(ppatt)
